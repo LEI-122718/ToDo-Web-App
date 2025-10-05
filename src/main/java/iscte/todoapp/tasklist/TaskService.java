@@ -38,7 +38,7 @@ public class TaskService {
     public void searchTask(String query) {
         List<Task> tasks = taskRepository.findAll();
         tasks.forEach(task -> task.setShown(false));
-        tasks.stream().filter(task -> query.isEmpty() || FuzzySearch.ratio(query, task.getDescription()) > 50).forEach(task -> task.setShown(true));
+        tasks.stream().filter(task -> query.isEmpty() || FuzzySearch.ratio(query, task.getDescription()) > 30).forEach(task -> task.setShown(true));
         taskRepository.saveAll(tasks);
     }
 }

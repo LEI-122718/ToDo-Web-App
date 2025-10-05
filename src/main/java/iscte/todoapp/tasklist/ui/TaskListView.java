@@ -1,6 +1,5 @@
 package iscte.todoapp.tasklist.ui;
 
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import iscte.todoapp.base.ui.component.ViewToolbar;
@@ -97,7 +96,7 @@ class TaskListView extends Main {
     }
 
    private void searchTasks(String value) {
-        taskService.searchTask(value);
+        taskService.searchTask(value.trim());
         taskGrid.getDataProvider().refreshAll();
        Notification.show("Searched by " + value, 3000, Notification.Position.BOTTOM_END)
                .addThemeVariants(NotificationVariant.LUMO_PRIMARY);
