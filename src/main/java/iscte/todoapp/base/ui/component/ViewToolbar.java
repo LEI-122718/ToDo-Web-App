@@ -1,4 +1,4 @@
-package com.example.base.ui.component;
+package iscte.todoapp.base.ui.component;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;

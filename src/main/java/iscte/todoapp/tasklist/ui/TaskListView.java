@@ -1,8 +1,10 @@
-package com.example.examplefeature.ui;
+package iscte.todoapp.tasklist.ui;
 
-import com.example.base.ui.component.ViewToolbar;
-import com.example.examplefeature.Task;
-import com.example.examplefeature.TaskService;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import iscte.todoapp.base.ui.component.ViewToolbar;
+import iscte.todoapp.tasklist.Task;
+import iscte.todoapp.tasklist.TaskService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -31,6 +33,7 @@ class TaskListView extends Main {
     private final TaskService taskService;
 
     final TextField description;
+    final TextField searchField;
     final DatePicker dueDate;
     final Button createBtn;
     final Grid<Task> taskGrid;
@@ -43,6 +46,18 @@ class TaskListView extends Main {
         description.setAriaLabel("Task description");
         description.setMaxLength(Task.DESCRIPTION_MAX_LENGTH);
         description.setMinWidth("20em");
+
+        searchField = new TextField();
+        searchField.setPlaceholder("Search");
+        searchField.setAriaLabel("Search");
+        searchField.setMaxLength(Task.DESCRIPTION_MAX_LENGTH);
+        searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
+        searchField.setMinWidth("10em");
+        searchField.addValueChangeListener(event -> {
+            if (event.isFromClient()) {
+               searchTasks(searchField.getValue());
+            }
+        });
 
         dueDate = new DatePicker();
         dueDate.setPlaceholder("Due date");
@@ -67,7 +82,7 @@ class TaskListView extends Main {
         addClassNames(LumoUtility.BoxSizing.BORDER, LumoUtility.Display.FLEX, LumoUtility.FlexDirection.COLUMN,
                 LumoUtility.Padding.MEDIUM, LumoUtility.Gap.SMALL);
 
-        add(new ViewToolbar("Task List", ViewToolbar.group(description, dueDate, createBtn)));
+        add(new ViewToolbar("Task List", ViewToolbar.group(description, dueDate, createBtn, searchField)));
         add(taskGrid);
     }
 
@@ -78,6 +93,13 @@ class TaskListView extends Main {
         dueDate.clear();
         Notification.show("Task added", 3000, Notification.Position.BOTTOM_END)
                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+    }
+
+   private void searchTasks(String value) {
+        taskService.searchTask(value.trim());
+        taskGrid.getDataProvider().refreshAll();
+       Notification.show("Searched by " + value, 3000, Notification.Position.BOTTOM_END)
+               .addThemeVariants(NotificationVariant.LUMO_PRIMARY);
     }
 
 }

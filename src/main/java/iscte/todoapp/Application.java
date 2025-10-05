@@ -1,4 +1,4 @@
-package com.example;
+package iscte.todoapp;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;

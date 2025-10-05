@@ -1,4 +1,4 @@
-package com.example.examplefeature;
+package iscte.todoapp.tasklist;
 
 import jakarta.persistence.*;
 import org.jspecify.annotations.Nullable;
@@ -26,6 +26,9 @@ public class Task {
     @Column(name = "due_date")
     @Nullable
     private LocalDate dueDate;
+
+    @Column(name = "shown")
+    private boolean shown = true;
 
     protected Task() { // To keep Hibernate happy
     }
@@ -60,6 +63,14 @@ public class Task {
 
     public void setDueDate(@Nullable LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public boolean isShown() {
+        return shown;
+    }
+
+    public void setShown(boolean shown) {
+        this.shown = shown;
     }
 
     @Override
