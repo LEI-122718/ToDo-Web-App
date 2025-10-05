@@ -1,6 +1,6 @@
 # App README
 
-- [ ] TODO Replace or update this README with instructions relevant to your application
+Testing Git Configurations :)
 
 ## Project Structure
 

@@ -1,5 +1,7 @@
 package com.example.examplefeature;
 
+import iscte.todoapp.tasklist.Task;
+import iscte.todoapp.tasklist.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
