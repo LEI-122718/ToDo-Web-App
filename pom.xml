@@ -64,7 +64,22 @@
             <version>3.5.2</version>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>me.xdrop</groupId>
+            <artifactId>fuzzywuzzy</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <!-- iText 7 Core PDF-->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext7-core</artifactId>
+            <version>7.2.5</version>
+        </dependency>
+
+
+
+
+</dependencies>
     
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
