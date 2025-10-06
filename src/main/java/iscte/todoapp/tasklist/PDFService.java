@@ -5,7 +5,9 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.property.UnitValue;
+import com.itextpdf.layout.properties.UnitValue;
+import com.itextpdf.layout.*;
+//import com.itextpdf.layout.property.UnitValue;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -34,6 +36,7 @@ public class PDFService {
             document.add(new Paragraph("\n"));
 
             // Tabela de tarefas
+            //UnitValue UnitValue = null;
             Table tabela = new Table(UnitValue.createPercentArray(new float[]{80, 20}))
                     .useAllAvailableWidth();
 

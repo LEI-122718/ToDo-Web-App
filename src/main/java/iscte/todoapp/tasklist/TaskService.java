@@ -41,4 +41,13 @@ public class TaskService {
         tasks.stream().filter(task -> query.isEmpty() || FuzzySearch.ratio(query, task.getDescription()) > 30).forEach(task -> task.setShown(true));
         taskRepository.saveAll(tasks);
     }
+
+    @Transactional(readOnly = true)
+    public List<Task> getAllTasks() {
+        // devolve tudo (ou aplica filtros que aches que faz sentido, ex: only shown)
+        return taskRepository.findAll().stream()
+                .filter(Task::isShown) // se quiseres apenas as visíveis (opcional)
+                .toList();
+    }
+
 }
