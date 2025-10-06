@@ -44,6 +44,8 @@ class TaskListView extends Main {
     private final TaskService taskService;
     private final PDFService pdfService;
 
+    private final TextField userEmail = new TextField();
+
     final TextField description;
     final TextField searchField;
     final DatePicker dueDate;
@@ -75,6 +77,10 @@ class TaskListView extends Main {
         dueDate = new DatePicker();
         dueDate.setPlaceholder("Due date");
         dueDate.setAriaLabel("Due date");
+
+        userEmail.setPlaceholder("Your email");
+        userEmail.setAriaLabel("User email");
+        userEmail.setMinWidth("20em");
 
         createBtn = new Button("Create", event -> createTask());
         createBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -125,16 +131,17 @@ class TaskListView extends Main {
                 LumoUtility.Padding.MEDIUM, LumoUtility.Gap.SMALL);
 
         add(new ViewToolbar("Task List",
-                ViewToolbar.group(description, dueDate, createBtn, searchField, downloadAnchor)));
+                ViewToolbar.group(description, dueDate,userEmail, createBtn, searchField, downloadAnchor)));
 
         add(taskGrid);
     }
 
     private void createTask() {
-        taskService.createTask(description.getValue(), dueDate.getValue());
+        taskService.createTask(description.getValue(), dueDate.getValue(),userEmail.getValue());
         taskGrid.getDataProvider().refreshAll();
         description.clear();
         dueDate.clear();
+        userEmail.clear();
         Notification.show("Task added", 3000, Notification.Position.BOTTOM_END)
                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
