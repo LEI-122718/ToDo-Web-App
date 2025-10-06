@@ -1,8 +1,10 @@
 package iscte.todoapp.tasklist.ui;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import iscte.todoapp.base.ui.component.ViewToolbar;
+import iscte.todoapp.tasklist.PDFService;
 import iscte.todoapp.tasklist.Task;
 import iscte.todoapp.tasklist.TaskService;
 import com.vaadin.flow.component.button.Button;
@@ -18,10 +20,19 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import java.io.ByteArrayInputStream;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Collection;
 import java.util.Optional;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.server.streams.DownloadEvent;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.IOException;
+import java.util.List;
+
 
 import static com.vaadin.flow.spring.data.VaadinSpringDataHelpers.toSpringPageRequest;
 
@@ -31,6 +42,9 @@ import static com.vaadin.flow.spring.data.VaadinSpringDataHelpers.toSpringPageRe
 class TaskListView extends Main {
 
     private final TaskService taskService;
+    private final PDFService pdfService;
+
+    private final TextField userEmail = new TextField();
 
     final TextField description;
     final TextField searchField;
@@ -38,8 +52,9 @@ class TaskListView extends Main {
     final Button createBtn;
     final Grid<Task> taskGrid;
 
-    TaskListView(TaskService taskService) {
+    TaskListView(TaskService taskService, PDFService pdfService) {
         this.taskService = taskService;
+        this.pdfService = pdfService;
 
         description = new TextField();
         description.setPlaceholder("What do you want to do?");
@@ -63,8 +78,41 @@ class TaskListView extends Main {
         dueDate.setPlaceholder("Due date");
         dueDate.setAriaLabel("Due date");
 
+        userEmail.setPlaceholder("Your email");
+        userEmail.setAriaLabel("User email");
+        userEmail.setMinWidth("20em");
+
         createBtn = new Button("Create", event -> createTask());
         createBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        // Botão e link para exportar PDF
+        var exportBtn = new Button("Exportar para PDF");
+
+// Cria um link de download que gera o PDF dinamicamente
+        Anchor downloadAnchor = new Anchor((DownloadEvent event) -> {
+            String nomeUtilizador = "Utilizador Exemplo"; // podes substituir pelo nome real do user
+
+            // Obter todas as tarefas
+            List<String> tarefas = taskService.getAllTasks().stream()
+                    .map(Task::getDescription)
+                    .toList();
+
+            // Configurar resposta HTTP
+            event.setFileName("relatorio_tarefas.pdf");
+            event.getResponse().setHeader("Content-Type", "application/pdf");
+
+            // Escrever o PDF diretamente no output
+            try (OutputStream os = event.getOutputStream();
+                 InputStream in = pdfService.gerarRelatorio(nomeUtilizador, tarefas)) {
+                in.transferTo(os);
+            } catch (IOException ex) {
+                throw new RuntimeException("Erro ao gerar PDF", ex);
+            }
+        }, "");
+
+// Adiciona o botão visual dentro do link de download
+        downloadAnchor.add(exportBtn);
+
 
         var dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(getLocale())
                 .withZone(ZoneId.systemDefault());
@@ -82,15 +130,18 @@ class TaskListView extends Main {
         addClassNames(LumoUtility.BoxSizing.BORDER, LumoUtility.Display.FLEX, LumoUtility.FlexDirection.COLUMN,
                 LumoUtility.Padding.MEDIUM, LumoUtility.Gap.SMALL);
 
-        add(new ViewToolbar("Task List", ViewToolbar.group(description, dueDate, createBtn, searchField)));
+        add(new ViewToolbar("Task List",
+                ViewToolbar.group(description, dueDate,userEmail, createBtn, searchField, downloadAnchor)));
+
         add(taskGrid);
     }
 
     private void createTask() {
-        taskService.createTask(description.getValue(), dueDate.getValue());
+        taskService.createTask(description.getValue(), dueDate.getValue(),userEmail.getValue());
         taskGrid.getDataProvider().refreshAll();
         description.clear();
         dueDate.clear();
+        userEmail.clear();
         Notification.show("Task added", 3000, Notification.Position.BOTTOM_END)
                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
