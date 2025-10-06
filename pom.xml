@@ -76,10 +76,15 @@
             <version>7.2.5</version>
         </dependency>
 
+        <!-- Envio de emails via SMTP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
 
 
 
-</dependencies>
+    </dependencies>
     
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
