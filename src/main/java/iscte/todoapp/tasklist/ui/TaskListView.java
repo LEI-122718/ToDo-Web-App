@@ -167,7 +167,7 @@ class TaskListView extends Main {
     }
 
     private void openQrModal() {
-        // Tasks data
+        //  a Tasks data
         List<String> items = taskService.getAllTasks().stream()
                 .map(Task::getDescription)
                 .toList();
