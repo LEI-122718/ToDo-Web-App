@@ -1,10 +1,15 @@
 package iscte.todoapp.tasklist.ui;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import iscte.todoapp.base.ui.component.ViewToolbar;
 import iscte.todoapp.tasklist.PDFService;
+import iscte.todoapp.tasklist.QRCodeService;
 import iscte.todoapp.tasklist.Task;
 import iscte.todoapp.tasklist.TaskService;
 import com.vaadin.flow.component.button.Button;
@@ -43,6 +48,7 @@ class TaskListView extends Main {
 
     private final TaskService taskService;
     private final PDFService pdfService;
+    private final QRCodeService qrCodeService;
 
     private final TextField userEmail = new TextField();
 
@@ -50,11 +56,15 @@ class TaskListView extends Main {
     final TextField searchField;
     final DatePicker dueDate;
     final Button createBtn;
+    final Button exportBtn;
+    final Button createQRCode;
+    final Anchor downloadAnchor;
     final Grid<Task> taskGrid;
 
-    TaskListView(TaskService taskService, PDFService pdfService) {
+    TaskListView(TaskService taskService, PDFService pdfService, QRCodeService qrCodeService) {
         this.taskService = taskService;
         this.pdfService = pdfService;
+        this.qrCodeService = qrCodeService;
 
         description = new TextField();
         description.setPlaceholder("What do you want to do?");
@@ -86,10 +96,13 @@ class TaskListView extends Main {
         createBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         // Botão e link para exportar PDF
-        var exportBtn = new Button("Exportar para PDF");
+        exportBtn = new Button("Exportar para PDF");
 
-// Cria um link de download que gera o PDF dinamicamente
-        Anchor downloadAnchor = new Anchor((DownloadEvent event) -> {
+        // Inicializar Botão QRCode
+        createQRCode = new Button("Create QR Code", event -> openQrModal());
+
+        // Cria um link de download que gera o PDF dinamicamente
+        downloadAnchor = new Anchor((DownloadEvent event) -> {
             String nomeUtilizador = "Utilizador Exemplo"; // podes substituir pelo nome real do user
 
             // Obter todas as tarefas
@@ -131,7 +144,7 @@ class TaskListView extends Main {
                 LumoUtility.Padding.MEDIUM, LumoUtility.Gap.SMALL);
 
         add(new ViewToolbar("Task List",
-                ViewToolbar.group(description, dueDate,userEmail, createBtn, searchField, downloadAnchor)));
+                ViewToolbar.group(description, dueDate,userEmail, createBtn, searchField, downloadAnchor, createQRCode)));
 
         add(taskGrid);
     }
@@ -151,6 +164,37 @@ class TaskListView extends Main {
         taskGrid.getDataProvider().refreshAll();
        Notification.show("Searched by " + value, 3000, Notification.Position.BOTTOM_END)
                .addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+    }
+
+    private void openQrModal() {
+        // Tasks data
+        List<String> items = taskService.getAllTasks().stream()
+                .map(Task::getDescription)
+                .toList();
+
+        // Generate Base64 QR from service
+        String base64 = qrCodeService.generateBulletPointQRCodeBase64(items, 250, 250);
+
+        // Build the modal
+        Dialog dialog = new Dialog();
+        dialog.setHeaderTitle("Your QR Code");
+
+        Image qrImage = new Image("data:image/png;base64," + base64, "QR Code");
+        qrImage.setWidth("250px");
+        qrImage.setHeight("250px");
+
+        VerticalLayout layout = new VerticalLayout(qrImage);
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.setPadding(true);
+
+        dialog.add(layout);
+        dialog.getFooter().add(new Button("Close", e -> dialog.close()));
+
+        dialog.setModal(true);
+        dialog.setDraggable(false);
+        dialog.setResizable(false);
+
+        dialog.open();
     }
 
 }
