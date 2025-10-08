@@ -1,4 +1,4 @@
-package com.example.app.utils;
+package iscte.todoapp.base.ui;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -10,7 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class QRCode {
-
+//teste commit
     public static byte[] generateQRCodeBytes(String text, int width, int height)
             throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
