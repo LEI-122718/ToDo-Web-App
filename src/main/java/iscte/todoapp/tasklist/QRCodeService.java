@@ -15,7 +15,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Service
-public class QRCodeService {
+public class QRCodeService {//commit
 
     public String generateBulletPointQRCodeBase64(List<String> items, int width, int height) {
         try {
