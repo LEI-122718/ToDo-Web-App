@@ -131,6 +131,11 @@ class TaskListView extends Main {
     }
 
     private void createTask() {
+        if (description.isEmpty()) {
+            Notification.show("Description is required", 3000, Notification.Position.BOTTOM_END)
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return;
+        }
         taskService.createTask(description.getValue(), dueDate.getValue());
         taskGrid.getDataProvider().refreshAll();
         description.clear();
