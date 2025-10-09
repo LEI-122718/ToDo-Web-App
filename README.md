@@ -1,6 +1,15 @@
-# App README
+# App To Do List
 
-Testing Git Configurations :)
+# Laboratório nº2 Engenharia de Software
+
+Trabalho realizado por:
+
+Carolina Torres - LEI-122718
+
+Matilde Marcelino - LEI-122695
+
+Ruama Felix - LEI-122662
+
 
 ## Project Structure
 
