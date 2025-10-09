@@ -37,15 +37,15 @@ public class PDFService {
 
             // Tabela de tarefas
             //UnitValue UnitValue = null;
-            Table tabela = new Table(UnitValue.createPercentArray(new float[]{80, 20}))
+            Table tabela = new Table(UnitValue.createPercentArray(new float[]{100}))
                     .useAllAvailableWidth();
 
             tabela.addHeaderCell(new Cell().add(new Paragraph("Tarefa").setBold()));
-            tabela.addHeaderCell(new Cell().add(new Paragraph("Estado").setBold()));
+            //tabela.addHeaderCell(new Cell().add(new Paragraph("Estado").setBold()));
 
             for (String tarefa : tarefas) {
                 tabela.addCell(new Cell().add(new Paragraph(tarefa)));
-                tabela.addCell(new Cell().add(new Paragraph("Concluída")));
+               // tabela.addCell(new Cell().add(new Paragraph("Concluída")));
             }
 
             document.add(tabela);

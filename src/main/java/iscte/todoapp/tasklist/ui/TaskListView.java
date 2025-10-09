@@ -85,9 +85,6 @@ class TaskListView extends Main {
         dueDate.setPlaceholder("Due date");
         dueDate.setAriaLabel("Due date");
 
-        userEmail.setPlaceholder("Your email");
-        userEmail.setAriaLabel("User email");
-        userEmail.setMinWidth("20em");
 
         createBtn = new Button("Create", event -> createTask());
         createBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -141,7 +138,7 @@ class TaskListView extends Main {
                 LumoUtility.Padding.MEDIUM, LumoUtility.Gap.SMALL);
 
         add(new ViewToolbar("Task List",
-                ViewToolbar.group(description, dueDate,userEmail, createBtn, searchField, downloadAnchor, createQRCode)));
+                ViewToolbar.group(description, dueDate, createBtn, searchField, downloadAnchor, createQRCode)));
 
         add(taskGrid);
     }
@@ -152,7 +149,7 @@ class TaskListView extends Main {
                     .addThemeVariants(NotificationVariant.LUMO_ERROR);
             return;
         }
-        taskService.createTask(description.getValue(), dueDate.getValue(),userEmail.getValue());
+        taskService.createTask(description.getValue(), dueDate.getValue());
         taskGrid.getDataProvider().refreshAll();
         description.clear();
         dueDate.clear();
