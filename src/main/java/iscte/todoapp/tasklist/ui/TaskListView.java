@@ -169,17 +169,13 @@ class TaskListView extends Main {
     }
 
     private void openQrModal() {
-        //  a Tasks data
-        List<String> items = taskService.getAllTasks().stream()
-                .map(Task::getDescription)
-                .toList();
+        String url = "http://localhost:8080/tasks-html"; // ou domínio real em produção
 
-        // Generate Base64 QR from service
-        String base64 = qrCodeService.generateBulletPointQRCodeBase64(items, 250, 250);
+        // Gerar QR Code para a URL
+        String base64 = qrCodeService.generateQRCodeFromText(url, 250, 250);
 
-        // Build the modal
         Dialog dialog = new Dialog();
-        dialog.setHeaderTitle("Your QR Code");
+        dialog.setHeaderTitle("QR Code for Your Tasks");
 
         Image qrImage = new Image("data:image/png;base64," + base64, "QR Code");
         qrImage.setWidth("250px");
@@ -198,5 +194,7 @@ class TaskListView extends Main {
 
         dialog.open();
     }
+
+
 
 }
