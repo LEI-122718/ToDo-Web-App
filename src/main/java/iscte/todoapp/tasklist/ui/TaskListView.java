@@ -1,6 +1,5 @@
 package iscte.todoapp.tasklist.ui;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
@@ -25,11 +24,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-import java.io.ByteArrayInputStream;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Collection;
 import java.util.Optional;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.server.streams.DownloadEvent;
@@ -80,7 +77,7 @@ class TaskListView extends Main {
         searchField.setMinWidth("10em");
         searchField.addValueChangeListener(event -> {
             if (event.isFromClient()) {
-                searchTasks(searchField.getValue());
+               searchTasks(searchField.getValue());
             }
         });
 
@@ -150,6 +147,11 @@ class TaskListView extends Main {
     }
 
     private void createTask() {
+        if (description.isEmpty()) {
+            Notification.show("Description is required", 3000, Notification.Position.BOTTOM_END)
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return;
+        }
         taskService.createTask(description.getValue(), dueDate.getValue(),userEmail.getValue());
         taskGrid.getDataProvider().refreshAll();
         description.clear();
@@ -159,25 +161,21 @@ class TaskListView extends Main {
                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 
-    private void searchTasks(String value) {
+   private void searchTasks(String value) {
         taskService.searchTask(value.trim());
         taskGrid.getDataProvider().refreshAll();
-        Notification.show("Searched by " + value, 3000, Notification.Position.BOTTOM_END)
-                .addThemeVariants(NotificationVariant.LUMO_PRIMARY);
+       Notification.show("Searched by " + value, 3000, Notification.Position.BOTTOM_END)
+               .addThemeVariants(NotificationVariant.LUMO_PRIMARY);
     }
 
     private void openQrModal() {
-        // Tasks data
-        List<String> items = taskService.getAllTasks().stream()
-                .map(Task::getDescription)
-                .toList();
+        String url = "http://localhost:8080/tasks-html"; // ou domínio real em produção
 
-        // Generate Base64 QR from service
-        String base64 = qrCodeService.generateBulletPointQRCodeBase64(items, 250, 250);
+        // Gerar QR Code para a URL
+        String base64 = qrCodeService.generateQRCodeFromText(url, 250, 250);
 
-        // Build the modal
         Dialog dialog = new Dialog();
-        dialog.setHeaderTitle("Your QR Code");
+        dialog.setHeaderTitle("QR Code for Your Tasks");
 
         Image qrImage = new Image("data:image/png;base64," + base64, "QR Code");
         qrImage.setWidth("250px");
@@ -196,5 +194,7 @@ class TaskListView extends Main {
 
         dialog.open();
     }
+
+
 
 }
