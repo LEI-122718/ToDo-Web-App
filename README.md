@@ -1,6 +1,6 @@
 # App To Do List
 
-# Laboratório nº2 Engenharia de Software
+## Laboratório nº2 Engenharia de Software
 
 Trabalho realizado por:
 
@@ -10,7 +10,53 @@ Matilde Marcelino - LEI-122695
 
 Ruama Felix - LEI-122662
 
+## Pipeline (D6)
 
+Este projeto inclui uma pipeline configurada com GitHub Actions, que automatiza o processo de build da aplicação Java.
+
+
+A pipeline realiza as seguintes ações:
+
+- Executa automaticamente sempre que é feito um push para a branch principal (main);
+
+- Configura o ambiente Java (versão 21);
+
+- Compila o projeto utilizando o Maven com o comando mvn clean package;
+
+- Publica o ficheiro .jar gerado como artefacto do workflow, disponível para download na secção Actions do GitHub.
+
+Excerto do ficheiro build.yml :
+
+```
+name: Build Java Project
+
+on:
+  push:
+    branches: [ "main" ]  # Executa em push na branch principal
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Compilar projeto com Maven
+        run: mvn -B clean package
+
+      - name: Publicar artefacto .jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/*.jar
+```
 ## Project Structure
 
 The sources of your App have the following structure:
