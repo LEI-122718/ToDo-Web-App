@@ -24,8 +24,8 @@ A pipeline realiza as seguintes ações:
 
 - Publica o ficheiro .jar gerado como artefacto do workflow, disponível para download na secção Actions do GitHub.
 
-## Link para o video de apresentação das funcionalidades:
-https://youtu.be/h9_fxXl3wnQ
+## Link para o video de apresentação das funcionalidades: https://youtu.be/h9_fxXl3wnQ
+
 
 Excerto do ficheiro build.yml :
 
