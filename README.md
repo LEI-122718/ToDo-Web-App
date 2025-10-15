@@ -14,7 +14,8 @@ Ruama Felix - LEI-122662
 
 Este projeto inclui uma pipeline configurada com GitHub Actions, que automatiza o processo de build da aplicação Java.
 
-
+## Link para o video de apresentação das funcionalidades:
+https://youtu.be/h9_fxXl3wnQ
 A pipeline realiza as seguintes ações:
 
 - Executa automaticamente sempre que é feito um push para a branch principal (main);
