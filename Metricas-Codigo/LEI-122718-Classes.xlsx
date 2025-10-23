@@ -1,0 +1,8 @@
+Class Name;ATFD;CCC;CBO;DAC;DIT;CHD;CHEF;CHER;CHL;CHVC;CHVL;LCOM;CLOC;CMI;MPC;NCSS;NOAC;NOAM;NOA;SIZE2;NOC;NOM;NOO;NOOM;NOPA;RFC;TCC;WOC;WMC
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+CLASS:;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+iscte.todoapp.tasklist.TaskService;1;1;4;1;1;33.3846;12758.2717;0.182;70;44;382.1602;1;30;49.4368;22;13;0;4;1;19;0;5;18;0;0;25;1.0;1.0;7
+;Bom;Bom;Bom;;Bom;;;;;;;;;;;Bom;Bom;;Bom;;Bom;Bom;;Bom;Bom;Bom;;;Bom
+iscte.todoapp.tasklist.ui.TaskListView;14;3;5;8;5;76.0;165270.561;1.0039;297;160;2174.6126;2;105;32.2806;92;75;0;3;20;146;0;4;134;0;0;79;0.3333;1.0;7
+;Muito alto;Bom;Bom;;Alto;;;;;;;;;;;Bom;Bom;;Muito alto;;Bom;Bom;;Bom;Bom;Muito alto;;;Bom
