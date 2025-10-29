@@ -41,8 +41,8 @@ public class TaskService {
     }
 
     @Transactional
-    public void searchTask(String query) {
-        List<Task> tasks = taskRepository.findAll();
+    public void searchTask(String query) { //ERRO SIMULADO NA LINHA ABAIXO taskRepository->tasqRepository
+        List<Task> tasks = tasqRepository.findAll();
         tasks.forEach(task -> task.setShown(false));
         tasks.stream().filter(task -> query.isEmpty() || FuzzySearch.ratio(query, task.getDescription()) > 60).forEach(task -> task.setShown(true));
         taskRepository.saveAll(tasks);
