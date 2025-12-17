@@ -1,5 +1,9 @@
 # App To Do List
 
+## Nota
+122718
+Não foi possível gerar o devcontainer, devido a problemas provavelmente de RAM, a elaboração ficava sempre presa no 99%, e após 5 tentativas falhadas decidi deixar o print da última tentativa que ficou presa no Computing backend
+
 ## Laboratório nº2 Engenharia de Software
 
 Trabalho realizado por:
